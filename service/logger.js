@@ -12,7 +12,8 @@ class LoggerService extends Service {
 		await super.init(injector);
 
 		const configLogging = this._config.get('logging');
-		const logLevel = configLogging.level || process.env.LOG_LEVEL || null;
+		let logLevel = configLogging.level || process.env.LOG_LEVEL || null;
+		logLevel = logLevel ? logLevel.trim() : logLevel;
 		const prettify = configLogging.prettify || process.env.LOG_PRETTIFY || false;
 		console.log('\n\n-----');
 		console.log(`configLogging.level: ${configLogging.level}`);
