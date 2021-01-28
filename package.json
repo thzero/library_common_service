@@ -1,9 +1,9 @@
 {
   "name": "@thzero/library_common_service",
-  "version": "0.13.9",
+  "version": "0.13.10",
   "version_major": 0,
   "version_minor": 13,
-  "version_patch": 9,
+  "version_patch": 10,
   "version_date": "01/28/2021",
   "author": "thZero",
   "license": "MIT",
@@ -19,10 +19,8 @@
     "cli-update": "./node_modules/.bin/library-cli --updateversion --pi",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "@thzero/library_common": "^0.13"
-  },
   "devDependencies": {
+    "@thzero/library_common": "^0.13",
     "@thzero/library_cli": "^0.13"
   }
 }
