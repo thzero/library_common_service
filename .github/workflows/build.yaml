@@ -109,7 +109,7 @@ jobs:
       if: steps.git-changes.outputs.changed == 1 && success()
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    - name: Repository Dispatch - Common
+    - name: Repository Dispatch - Server
       if: github.event.action == 'build_all'
       uses: peter-evans/repository-dispatch@v1
       with:
