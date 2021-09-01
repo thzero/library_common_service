@@ -17,10 +17,13 @@
   "homepage": "https://github.com/thzero/library_common_service#readme",
   "scripts": {
     "cli-update": "./node_modules/.bin/library-cli --updateversion --pi",
+    "cli-update-w": ".\\node_modules\\.bin\\library-cli --updateversion --pi",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "@thzero/library_common": "^0.13"
+  },
   "devDependencies": {
-    "@thzero/library_common": "^0.13",
-    "@thzero/library_cli": "^0.13"
+    "@thzero/library_cli": "^0.13.17"
   }
 }
