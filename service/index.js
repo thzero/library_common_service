@@ -147,9 +147,7 @@ class Service {
 	}
 
 	_successResponse(value, correlationId) {
-		const response = Response.success(correlationId);
-		response.results = value;
-		return response;
+		return Response.success(correlationId, value);
 	}
 
 	_validateId(correlationId, id, prefix) {
