@@ -44,7 +44,7 @@ class Service {
 	}
 
 	_enforce(clazz, method, value, name, correlationId, message) {
-		if (String.isNullOrEmpty(value)) {
+		if (value) {
 			if (!String.isNullOrEmpty(message))
 				message = `${name} is invalid.`;
 
@@ -72,7 +72,7 @@ class Service {
 	}
 
 	_enforceNotNull(clazz, method, value, name, correlationId) {
-		if (!value) {
+		if (!value || value === undefined) {
 			this._logger.error(clazz, method, `${name} is null.`, null, correlationId);
 			const error = Error(`${name} is null.`, true);
 			error.correlationId = correlationId;
@@ -90,7 +90,7 @@ class Service {
 	}
 
 	_enforceNotNullResponse(clazz, method, value, name, correlationId) {
-		if (!value) {
+		if (!value || value === undefined) {
 			this._logger.error(clazz, method, `${name} is null.`, null, correlationId);
 			return Response.error(clazz, method, `${name} is null.`, null, null, null, correlationId);
 		}
