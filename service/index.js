@@ -45,7 +45,7 @@ class Service {
 
 	_enforce(clazz, method, value, name, correlationId, message) {
 		if (String.isNullOrEmpty(value)) {
-			if (!message)
+			if (!String.isNullOrEmpty(message))
 				message = `${name} is invalid.`;
 
 			this._logger.error(clazz, method, message, null, correlationId);
@@ -118,7 +118,7 @@ class Service {
 
 	_enforceResponse(clazz, method, response, name, correlationId, message) {
 		if (!response || (response && !response.success)) {
-			if (!message)
+			if (!String.isNullOrEmpty(message))
 				message = `Unsuccessful response for ${name}.`;
 
 			this._logger.error(clazz, method, message, null, correlationId);
