@@ -43,10 +43,13 @@ class Service {
 		return this._success(correlationId);
 	}
 
-	_enforce(clazz, method, value, name, correlationId) {
-		if (String.isNullOrEmpty(value)) {
-			this._logger.error(clazz, method, `Invalid ${name}`, null, correlationId);
-			const error = Error(`Invalid ${name}`, true);
+	_enforce(clazz, method, value, name, correlationId, message) {
+		if (value) {
+			if (!String.isNullOrEmpty(message))
+				message = `${name} is invalid.`;
+
+			this._logger.error(clazz, method, message, null, correlationId);
+			const error = Error(message, true);
 			error.correlationId = correlationId;
 			throw error;
 		}
@@ -54,8 +57,8 @@ class Service {
 
 	_enforceNotEmpty(clazz, method, value, name, correlationId) {
 		if (String.isNullOrEmpty(value)) {
-			this._logger.error(clazz, method, `Invalid ${name}`, null, correlationId);
-			const error = Error(`Invalid ${name}`, true);
+			this._logger.error(clazz, method, `${name} is empty.`, null, correlationId);
+			const error = Error(`${name} is empty.`, true);
 			error.correlationId = correlationId;
 			throw error;
 		}
@@ -63,15 +66,15 @@ class Service {
 	
 	_enforceNotEmptyEither(clazz, method, value1, value2, name1, name2, correlationId) {
 		if (String.isNullOrEmpty(value1) && String.isNullOrEmpty(value2)) {
-			this._logger.error(clazz, method, `Invalid ${name1} or ${name2}`, null, correlationId);
-			throw Error(`Invalid ${name1} or ${name2}`);
+			this._logger.error(clazz, method, `Either ${name1} or ${name2} are empty.`, null, correlationId);
+			throw Error(`Either ${name1} or ${name2} are empty.`);
 		}
 	}
 
 	_enforceNotNull(clazz, method, value, name, correlationId) {
-		if (!value) {
-			this._logger.error(clazz, method, `Invalid ${name}`, null, correlationId);
-			const error = Error(`Invalid ${name}`, true);
+		if (!value || value === undefined) {
+			this._logger.error(clazz, method, `${name} is null.`, null, correlationId);
+			const error = Error(`${name} is null.`, true);
 			error.correlationId = correlationId;
 			throw error;
 		}
@@ -79,17 +82,17 @@ class Service {
 
 	_enforceNotEmptyResponse(clazz, method, value, name, correlationId) {
 		if (String.isNullOrEmpty(value)) {
-			this._logger.error(clazz, method, `Invalid ${name}`, null, correlationId);
-			return Response.error(clazz, method, `Invalid ${name}`, null, null, null, correlationId);
+			this._logger.error(clazz, method, `${name} is empty.`, null, correlationId);
+			return Response.error(clazz, method, `${name} is empty.`, null, null, null, correlationId);
 		}
 
 		return this._success(correlationId);
 	}
 
 	_enforceNotNullResponse(clazz, method, value, name, correlationId) {
-		if (!value) {
-			this._logger.error(clazz, method, `Invalid ${name}`, null, correlationId);
-			return Response.error(clazz, method, `Invalid ${name}`, null, null, null, correlationId);
+		if (!value || value === undefined) {
+			this._logger.error(clazz, method, `${name} is null.`, null, correlationId);
+			return Response.error(clazz, method, `${name} is null.`, null, null, null, correlationId);
 		}
 
 		return this._success(correlationId);
@@ -97,8 +100,8 @@ class Service {
 
 	_enforceNotEmptyAsResponse(clazz, method, value, name, correlationId) {
 		if (String.isNullOrEmpty(value)) {
-			this._logger.error(clazz, method, `Invalid ${name}`, null, correlationId);
-			return Response.error(clazz, method, `Invalid ${name}`, null, null, null, correlationId);
+			this._logger.error(clazz, method, `${name} is empty.`, null, correlationId);
+			return Response.error(clazz, method, `${name} is empty.`, null, null, null, correlationId);
 		}
 
 		return this._successResponse(null, correlationId);
@@ -106,17 +109,20 @@ class Service {
 
 	_enforceNotNullAsResponse(clazz, method, value, name, correlationId) {
 		if (!value) {
-			this._logger.error(clazz, method, `Invalid ${name}`, null, correlationId);
-			return Response.error(clazz, method, `Invalid ${name}`, null, null, null, correlationId);
+			this._logger.error(clazz, method, `${name} is null.`, null, correlationId);
+			return Response.error(clazz, method, `${name} is null.`, null, null, null, correlationId);
 		}
 
 		return this._successResponse(null, correlationId);
 	}
 
-	_enforceResponse(clazz, method, response, name, correlationId) {
+	_enforceResponse(clazz, method, response, name, correlationId, message) {
 		if (!response || (response && !response.success)) {
-			this._logger.error(clazz, method, `Invalid ${name}`, null, correlationId);
-			const error = Error(`Unsuccessful response for ${name}`, true);
+			if (!String.isNullOrEmpty(message))
+				message = `Unsuccessful response for ${name}.`;
+
+			this._logger.error(clazz, method, message, null, correlationId);
+			const error = Error(message, true);
 			error.correlationId = correlationId;
 			throw error;
 		}
