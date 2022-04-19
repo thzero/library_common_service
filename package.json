@@ -1,11 +1,11 @@
 {
   "name": "@thzero/library_common_service",
   "type": "module",
-  "version": "0.15.13",
+  "version": "0.15.14",
   "version_major": 0,
   "version_minor": 15,
-  "version_patch": 13,
-  "version_date": "04/17/2022",
+  "version_patch": 14,
+  "version_date": "04/19/2022",
   "author": "thZero",
   "license": "MIT",
   "repository": {
