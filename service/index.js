@@ -1,7 +1,7 @@
-import LibraryConstants from '../constants';
-import LibraryCommonConstants from '@thzero/library_common/constants';
+import LibraryConstants from '../constants.js';
+import LibraryCommonConstants from '@thzero/library_common/constants.js';
 
-import Response from '@thzero/library_common/response';
+import Response from '@thzero/library_common/response/index.js';
 
 class Service {
 	constructor() {

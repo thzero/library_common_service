@@ -1,4 +1,4 @@
-import Service from './index';
+import Service from './index.js';
 
 class ConfigService extends Service {
 	constructor(config) {

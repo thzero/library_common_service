@@ -1,4 +1,4 @@
-import Service from './index';
+import Service from './index.js';
 
 class BaseValidationService extends Service {
 	check(correlationId, schema, value, context, prefix) {
