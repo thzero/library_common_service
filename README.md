@@ -13,5 +13,4 @@
 #### NodeJs
 
 Requires 
-* [NodeJs](https://nodejs.org) version 18+
 * [library_common](https://npmjs.org/package/@thzero/library_common_service)
