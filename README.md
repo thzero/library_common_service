@@ -10,7 +10,6 @@
 
 ### Requirements
 
-#### NodeJs
+#### Packages
 
-Requires 
-* [library_common](https://npmjs.org/package/@thzero/library_common_service)
+[library_common](https://npmjs.org/package/@thzero/library_common_service)
