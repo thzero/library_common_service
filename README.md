@@ -4,14 +4,13 @@
 
 # library_common_service
 
+## Requirements
+
+### NodeJs
+
+[NodeJs](https://nodejs.org) version 18+
+
 ## Installation
 
 [![NPM](https://nodei.co/npm/@thzero/library_common_service.png?compact=true)](https://npmjs.org/package/@thzero/library_common_service)
 
-### Requirements
-
-#### NodeJs
-
-Requires 
-* [NodeJs](https://nodejs.org) version 18+
-* [library_common](https://npmjs.org/package/@thzero/library_common_service)
