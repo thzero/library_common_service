@@ -92,7 +92,7 @@ class Service {
 			return Response.error(clazz, method, `${name} is empty.`, null, null, null, correlationId);
 		}
 
-		return this._success(correlationId);
+		return this._successResponse(value, correlationId);
 	}
 
 	_enforceNotNull(clazz, method, value, name, correlationId) {
@@ -132,16 +132,7 @@ class Service {
 			return Response.error(clazz, method, `${name} is null.`, null, null, null, correlationId);
 		}
 
-		return this._success(correlationId);
-	}
-
-	_enforceNotNullResponse(clazz, method, value, name, correlationId) {
-		if (!value) {
-			this._logger.error(clazz, method, `${name} is null.`, null, correlationId);
-			return Response.error(`${name} is null.`, null);
-		}
-
-		return this._success(correlationId);
+		return this._successResponse(value, correlationId);
 	}
 
 	_enforceResponse(clazz, method, response, name, correlationId, message) {
