@@ -74,7 +74,7 @@ class Service {
 	}
 
 	_enforceNotEmptyMultiple(clazz, method, values, names, correlationId) {
-		const valid  = true;
+		let valid = true;
 		for (const value of values)
 			valid &= String.isNullOrEmpty(value);
 		if (!valid) {
@@ -114,7 +114,7 @@ class Service {
 	}
 
 	_enforceNotNullMultiple(clazz, method, values, names, correlationId) {
-		const valid  = true;
+		let valid = true;
 		for (const value of values)
 			valid &= values;
 		if (!valid) {
