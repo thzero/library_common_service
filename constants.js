@@ -1,4 +1,4 @@
-const LibraryConstants = {
+const LibraryCommonServiceConstants = {
 	InjectorKeys: {
 		SERVICE_CONFIG: 'config',
 		SERVICE_LOGGER: 'serviceLogger',
@@ -7,4 +7,4 @@ const LibraryConstants = {
 	}
 }
 
-export default LibraryConstants;
+export default LibraryCommonServiceConstants;
