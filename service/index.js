@@ -1,5 +1,5 @@
-import LibraryConstants from '../constants.js';
 import LibraryCommonConstants from '@thzero/library_common/constants.js';
+import LibraryCommonServiceConstants from '../constants.js';
 
 import Response from '@thzero/library_common/response/index.js';
 
@@ -14,9 +14,9 @@ class Service {
 	async init(injector) {
 		this._injector = injector;
 
-		this._config = this._injector.getService(LibraryConstants.InjectorKeys.SERVICE_CONFIG);
-		this._logger = this._injector.getService(LibraryConstants.InjectorKeys.SERVICE_LOGGER);
-		this._serviceValidation = this._injector.getService(LibraryConstants.InjectorKeys.SERVICE_VALIDATION);
+		this._config = this._injector.getService(LibraryCommonServiceConstants.InjectorKeys.SERVICE_CONFIG);
+		this._logger = this._injector.getService(LibraryCommonServiceConstants.InjectorKeys.SERVICE_LOGGER);
+		this._serviceValidation = this._injector.getService(LibraryCommonServiceConstants.InjectorKeys.SERVICE_VALIDATION);
 	}
 
 	async initPost() {

@@ -1,11 +1,11 @@
 {
   "name": "@thzero/library_common_service",
   "type": "module",
-  "version": "0.16.7",
+  "version": "0.17.0",
   "version_major": 0,
-  "version_minor": 16,
-  "version_patch": 7,
-  "version_date": "01/11/2023",
+  "version_minor": 17,
+  "version_patch": 0,
+  "version_date": "02/01/2023",
   "author": "thZero",
   "license": "MIT",
   "repository": {
@@ -21,6 +21,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "peerDependencies": {
-    "@thzero/library_common": "^0.16"
+    "@thzero/library_common": "^0.17"
   }
 }
