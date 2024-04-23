@@ -15,24 +15,26 @@ class LoggerService extends Service {
 		let logLevel = configLogging.level || process.env.LOG_LEVEL || null;
 		logLevel = logLevel ? logLevel.trim() : logLevel;
 		const prettify = configLogging.prettify || process.env.LOG_PRETTIFY || false;
-		console.log('\n\n-----');
-		console.log(`configLogging.level: ${configLogging.level}`);
-		console.log(`process.env.LOG_LEVEL: ${process.env.LOG_LEVEL}`);
-		console.log(`logLevel: ${logLevel}`);
-		console.log('-----');
-		console.log(`configLogging.prettify: ${configLogging.prettify}`);
-		console.log(`process.env.LOG_PRETTIFY: ${process.env.LOG_PRETTIFY}`);
-		console.log(`prettify: ${prettify}`);
-		console.log('-----\n\n');
-		console.log('-----');
+		console.log();
+		console.log('\t----logging.initialization---------------------');
+		console.log(`\tconfigLogging.level: ${configLogging.level}`);
+		console.log(`\tprocess.env.LOG_LEVEL: ${process.env.LOG_LEVEL}`);
+		console.log(`\tlogLevel: ${logLevel}`);
+		console.log('\t-------------------------------------------------');
+		console.log(`\tconfigLogging.prettify: ${configLogging.prettify}`);
+		console.log(`\tprocess.env.LOG_PRETTIFY: ${process.env.LOG_PRETTIFY}`);
+		console.log(`\tprettify: ${prettify}`);
+		console.log('\t-------------------------------------------------');
+
 		let loggerService;
 		for(const key of this._loggerKeys) {
-			console.log(`logger: ${key}`);
+			console.log(`\tlogger: ${key}`);
 			loggerService = this._injector.getService(key);
 			this._loggers.push(loggerService);
 			await loggerService.initLogger(logLevel, prettify, configLogging);
 		}
-		console.log('-----\n\n');
+		console.log('\t----logging.initialization.complete------------');
+		console.log();
 	}
 
 	register(key) {
