@@ -5,6 +5,7 @@ class LoggerService extends Service {
 		super();
 
 		this._loggers = [];
+		this._loggersRaw = [];
 		this._loggerKeys = [];
 	}
 
@@ -31,6 +32,8 @@ class LoggerService extends Service {
 			console.log(`\tlogger: ${key}`);
 			loggerService = this._injector.getService(key);
 			this._loggers.push(loggerService);
+			if (loggerService.raw)
+				this._loggersRaw.push(loggerService);
 			await loggerService.initLogger(logLevel, prettify, configLogging);
 		}
 		console.log('\t----logging.initialization.complete------------');
@@ -194,6 +197,19 @@ class LoggerService extends Service {
 			}
 			catch (err) {
 				console.error('logger exception - info: ', err);
+			}
+		}
+	}
+
+	raw(message, data, correlationId, isClient) {
+		let index = 0;
+		const length = this._loggersRaw.length;
+		for (; index < length; index++) {
+			try {
+				this._loggersRaw[index].raw(message, data, correlationId, isClient);
+			}
+			catch (err) {
+				console.error('logger exception - raw: ', err);
 			}
 		}
 	}
