@@ -76,7 +76,7 @@ class Service {
 	_enforceNotEmptyMultiple(clazz, method, values, names, correlationId) {
 		let valid = true;
 		for (const value of values)
-			valid &= String.isNullOrEmpty(value);
+			valid &= !String.isNullOrEmpty(value);
 		if (!valid) {
 			names = names.join(', ');
 			this._logger.error(clazz, method, `None of the fields are not null: ${names}`, null, correlationId);
