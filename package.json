@@ -20,9 +20,14 @@
   "homepage": "https://github.com/thzero/library_common_service#readme",
   "scripts": {
     "cli-update": "library-cli --updateversion --pi",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test \"test/*.test.js\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "peerDependencies": {
     "@thzero/library_common": "^0.18"
+  },
+  "devDependencies": {
+    "eslint": "^9"
   }
 }

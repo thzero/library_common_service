@@ -1,4 +1,4 @@
-import Service from '@thzero/library_common_service/service/index.js';
+import Service from './index.js';
 
 class LoggerService extends Service {
 	constructor() {
