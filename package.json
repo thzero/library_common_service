@@ -18,6 +18,9 @@
     "url": "https://github.com/thzero/library_common_service/issues"
   },
   "homepage": "https://github.com/thzero/library_common_service#readme",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "cli-update": "library-cli --updateversion --pi",
     "test": "node --test \"test/*.test.js\"",
