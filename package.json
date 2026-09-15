@@ -1,11 +1,11 @@
 {
   "name": "@thzero/library_common_service",
   "type": "module",
-  "version": "0.18.10",
+  "version": "0.19.1",
   "version_major": 0,
-  "version_minor": 18,
-  "version_patch": 10,
-  "version_date": "05/21/2026",
+  "version_minor": 19,
+  "version_patch": 1,
+  "version_date": "09/15/2026",
   "author": "thZero",
   "author_url": "https://www.thzero.com",
   "copyright": "2020-2026",
@@ -18,11 +18,19 @@
     "url": "https://github.com/thzero/library_common_service/issues"
   },
   "homepage": "https://github.com/thzero/library_common_service#readme",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "cli-update": "library-cli --updateversion --pi",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test \"test/*.test.js\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "peerDependencies": {
-    "@thzero/library_common": "^0.18"
+    "@thzero/library_common": "^0.19"
+  },
+  "devDependencies": {
+    "eslint": "^9"
   }
 }
