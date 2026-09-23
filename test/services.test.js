@@ -54,6 +54,42 @@ describe('ConfigService', () => {
 		assert.equal(service.get('app.enabled', true), false);
 		assert.equal(service.get('app.count', 99), 0);
 	});
+
+	// node-config also has has(). Building an Error to find out a key is absent
+	// costs a stack trace, and optional keys are read on request paths.
+	describe('with a provider that can answer has()', () => {
+		const askable = (values) => {
+			const base = provider(values);
+			const calls = { get: 0, has: 0 };
+			return {
+				calls,
+				has(key) { calls.has++; return key in values; },
+				get(key) { calls.get++; return base.get(key); }
+			};
+		};
+
+		it('returns the default for a missing key without calling get', () => {
+			const config = askable({});
+			const service = new ConfigService(config);
+			assert.equal(service.get('app.missing', 'fallback'), 'fallback');
+			assert.equal(config.calls.has, 1);
+			assert.equal(config.calls.get, 0);
+		});
+
+		it('reads a present key, falsy values included', () => {
+			const config = askable({ 'app.count': 0, 'app.enabled': false });
+			const service = new ConfigService(config);
+			assert.equal(service.get('app.count', 99), 0);
+			assert.equal(service.get('app.enabled', true), false);
+		});
+
+		it('does not consult has() when no default was supplied, so a required key still fails loudly', () => {
+			const config = askable({});
+			const service = new ConfigService(config);
+			assert.throws(() => service.get('app.missing'), /is not defined/);
+			assert.equal(config.calls.has, 0);
+		});
+	});
 });
 
 describe('LoggerService', () => {
@@ -127,6 +163,67 @@ describe('LoggerService', () => {
 		service._loggers = [];
 		assert.doesNotThrow(() => service.debug('C', 'm', 'msg', null, 'cid'));
 		assert.doesNotThrow(() => service.error('C', 'm', 'msg', null, 'cid'));
+	});
+
+	// The facade used to fan every call out to every backend, inside a try/catch,
+	// and only then did each backend compare the level. The auth middlewares make
+	// around ten debug calls per request, all of which are off in production.
+	describe('level gate', () => {
+		it('resolves the configured level during init', async () => {
+			service.register('a');
+			const services = {
+				a: newLogger('a', calls),
+				[LibraryCommonServiceConstants.InjectorKeys.SERVICE_CONFIG]: {
+					get: () => ({ level: 'info', prettify: false })
+				}
+			};
+			inject(service, '_injector', newInjector(services));
+			inject(service, '_config', services[LibraryCommonServiceConstants.InjectorKeys.SERVICE_CONFIG]);
+
+			await service.init(newInjector(services));
+
+			assert.equal(service._level, LoggerService.Levels.info);
+			assert.equal(service.isDebugEnabled(), false);
+			assert.equal(service.isTraceEnabled(), false);
+			assert.equal(service.isLevelEnabled('info'), true);
+			assert.equal(service.isLevelEnabled('warn'), true);
+		});
+
+		it('drops a call below the level before it reaches any logger', () => {
+			service._loggers = [ newLogger('a', calls) ];
+			service._level = LoggerService.Levels.info;
+
+			service.debug('C', 'm', 'msg', null, 'cid');
+			service.debug2('msg', null, 'cid');
+			assert.equal(calls.length, 0);
+
+			service.info2('msg', null, 'cid');
+			service.error('C', 'm', 'msg', null, 'cid');
+			assert.deepEqual(calls.map(c => c.level), [ 'info2', 'error' ]);
+		});
+
+		it('forwards everything until init has resolved a level', () => {
+			service._loggers = [ newLogger('a', calls) ];
+			service.debug('C', 'm', 'msg', null, 'cid');
+			assert.equal(calls.length, 1);
+			assert.equal(service.isDebugEnabled(), true);
+		});
+
+		it('resolves level names case-insensitively and treats unknown ones as everything on', () => {
+			assert.equal(LoggerService.resolveLevel('DEBUG'), LoggerService.Levels.debug);
+			assert.equal(LoggerService.resolveLevel(' trace '), LoggerService.Levels.trace);
+			assert.equal(LoggerService.resolveLevel('off'), LoggerService.Levels.off);
+			assert.equal(LoggerService.resolveLevel('nonsense'), Number.MAX_VALUE);
+			assert.equal(LoggerService.resolveLevel(null), Number.MAX_VALUE);
+		});
+
+		it('off silences every level', () => {
+			service._loggers = [ newLogger('a', calls) ];
+			service._level = LoggerService.Levels.off;
+			service.error('C', 'm', 'msg', null, 'cid');
+			service.debug('C', 'm', 'msg', null, 'cid');
+			assert.equal(calls.length, 0);
+		});
 	});
 });
 

@@ -2,6 +2,7 @@ import LibraryCommonConstants from '@thzero/library_common/constants.js';
 import LibraryCommonServiceConstants from '../constants.js';
 
 import Response from '@thzero/library_common/response/index.js';
+import ResponseParam from '@thzero/library_common/response/responseParam.js';
 
 class Service {
 	constructor() {
@@ -32,8 +33,10 @@ class Service {
 
 		let valid = value.updatedTimestamp >= requestedValue.updatedTimestamp;
 		this._logger.debug('Service', '_checkUpdatedTimestamp', 'valid', valid, correlationId, );
+		// The param is built directly; it used to allocate a whole Response just to
+		// call paramIl8n on it, which never touched the instance.
 		if (!valid)
-			return this._error('Service', '_checkUpdatedTimestamp', 'Invalid timestamp.', null, null, null, correlationId).addGeneric('Object already changed', LibraryCommonConstants.ErrorFields.ObjectChanged, { objectType: this._initResponse(correlationId).paramIl8n(objectType) });
+			return this._error('Service', '_checkUpdatedTimestamp', 'Invalid timestamp.', null, null, null, correlationId).addGeneric('Object already changed', LibraryCommonConstants.ErrorFields.ObjectChanged, { objectType: new ResponseParam(objectType, true, null) });
 
 		// valid = value.updatedTimestamp === requestedValue.updatedTimestamp;
 		// this._logger.debug('_checkUpdatedTimestamp.valid', valid);
