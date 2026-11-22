@@ -31,12 +31,12 @@ class Service {
 		if (!requestedValue)
 			return this._success(correlationId);
 
-		let valid = value.updatedTimestamp >= requestedValue.updatedTimestamp;
+		let valid = value.updatedTimestamp === requestedValue.updatedTimestamp;
 		this._logger.debug('Service', '_checkUpdatedTimestamp', 'valid', valid, correlationId, );
 		// The param is built directly; it used to allocate a whole Response just to
 		// call paramIl8n on it, which never touched the instance.
 		if (!valid)
-			return this._error('Service', '_checkUpdatedTimestamp', 'Invalid timestamp.', null, null, null, correlationId).addGeneric('Object already changed', LibraryCommonConstants.ErrorFields.ObjectChanged, { objectType: new ResponseParam(objectType, true, null) });
+			return this._error('Service', '_checkUpdatedTimestamp', 'Invalid timestamp.', null, null, null, correlationId).addGeneric('Object already changed', LibraryCommonConstants.ErrorCodes.ObjectChanged, { objectType: new ResponseParam(objectType, true, null) });
 
 		// valid = value.updatedTimestamp === requestedValue.updatedTimestamp;
 		// this._logger.debug('_checkUpdatedTimestamp.valid', valid);

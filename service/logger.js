@@ -62,6 +62,12 @@ class LoggerService extends Service {
 		console.log();
 	}
 
+	async flush() {
+		await Promise.allSettled(this._loggers
+			.filter(l => l && (typeof l.flush === 'function'))
+			.map(l => Promise.resolve().then(() => l.flush())));
+	}
+
 	// For a caller about to build a payload that is only worth building if it
 	// will be logged.
 	isDebugEnabled() {
