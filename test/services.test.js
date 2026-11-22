@@ -269,3 +269,19 @@ describe('constants', () => {
 		});
 	});
 });
+
+describe('LoggerService.flush', () => {
+	it('flushes every backend that can and skips the rest', async () => {
+		const service = new LoggerService();
+		const flushed = [];
+		service._loggers = [
+			{ flush: async () => { flushed.push('a'); } },
+			{},
+			{ flush: () => { throw new Error('sync'); } },
+			{ flush: async () => { throw new Error('async'); } },
+			{ flush: async () => { flushed.push('b'); } }
+		];
+		await service.flush();
+		assert.deepEqual(flushed, [ 'a', 'b' ]);
+	});
+});

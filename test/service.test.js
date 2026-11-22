@@ -145,18 +145,24 @@ describe('_checkUpdatedTimestamp', () => {
 		assert.equal(service._hasSucceeded(service._checkUpdatedTimestamp('cid', null, { updatedTimestamp: 1 }, 'thing')), true);
 	});
 
-	it('succeeds when the stored copy is at least as new as the request', () => {
+	it('succeeds when the request was made against the stored copy', () => {
 		const response = service._checkUpdatedTimestamp('cid', { updatedTimestamp: 5 }, { updatedTimestamp: 5 }, 'thing');
 		assert.equal(service._hasSucceeded(response), true);
 	});
 
-	// Known behaviour, flagged in the audit and not changed: the comparison is
-	// `stored >= requested`, so a request carrying an older timestamp still passes.
-	// The commented-out line in the source shows `===` was the intent. This test
-	// pins current behaviour so a future fix is a deliberate change.
-	it('currently accepts a stale request timestamp (see audit)', () => {
+	it('fails when the request was made against an older copy', () => {
 		const response = service._checkUpdatedTimestamp('cid', { updatedTimestamp: 10 }, { updatedTimestamp: 1 }, 'thing');
-		assert.equal(service._hasSucceeded(response), true);
+		assert.equal(service._hasFailed(response), true);
+	});
+
+	it('marks the failure as objectChanged', () => {
+		const response = service._checkUpdatedTimestamp('cid', { updatedTimestamp: 10 }, { updatedTimestamp: 1 }, 'thing');
+		assert.equal(response.errors[0].code, 'objectChanged');
+	});
+
+	it('fails when the request carries no timestamp', () => {
+		const response = service._checkUpdatedTimestamp('cid', { updatedTimestamp: 10 }, { name: 'x' }, 'thing');
+		assert.equal(service._hasFailed(response), true);
 	});
 
 	it('fails when the request is newer than the stored copy', () => {
